@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import SGDRegressor
 
 
-model = LinearRegression(alpha=1e-2, iter=10000)
+model = LinearRegression(alpha=1e-2, iter=20000)
 test_model = SGDRegressor(learning_rate='constant', eta0=1e-2, max_iter=10000)
 
 X = np.array([[1], [2], [3], [4], [5]])
