@@ -3,7 +3,7 @@ import numpy as np
 
 from src.loss.loss import Loss
 from src.optimizer.optimizer import Optimizer
-from src.utility.model_type import ModelType
+from src.utility.type import ModelType
 from src.utility.parameter import Parameter, Parameters
 
 

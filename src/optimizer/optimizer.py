@@ -2,9 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 
 from ..gradient.gradient_mapping import GradientFunction
-from ..utility.loss_type import LossType
-from ..utility.model_type import ModelType
-from ..utility.optimizer_type import OptimizerType
+from ..utility.type import LossType, ModelType, OptimizerType
 from ..utility.parameter import Parameters
 
 

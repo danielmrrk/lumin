@@ -1,5 +1,5 @@
 from .loss import Loss
-from src.utility.loss_type import LossType
+from src.utility.type import LossType
 
 
 class MSE(Loss):
