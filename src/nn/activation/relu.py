@@ -1,9 +1,12 @@
 import numpy as np
 
-from src.nn.backprop.backprop_interfaces import Activation
-
+from src.nn.activation.activation import Activation
 
 class ReLu(Activation):
+    def forward_train(self, z: np.array) -> np.array:
+        self._z = z
+        return self.forward(self, z)
+
     def forward(self, z: np.array) -> np.array:
         self._z = z
         return np.maximum(0, z)

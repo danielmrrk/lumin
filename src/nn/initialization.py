@@ -22,6 +22,8 @@ def _xavier_initialization(input_dim: int, units: int) -> Parameters:
 
 class InitParams:
     def __init__(self, input_dim: int, units: int, init: InitType):
+        self.input_dim = input_dim
+        self.units = units
         if init == InitType.HE:
             self.p =  _he_initialization(input_dim, units)
         else:

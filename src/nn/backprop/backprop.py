@@ -1,16 +1,13 @@
 import numpy as np
-from PIL.DdsImagePlugin import module
-
-from src.nn.module import Module
-
 
 class Backprop:
-    def __init__(self, module: Module, X: np.array, y: np.array):
-        self.module = module
+    def __init__(self, module, X: np.array, y: np.array):
+        from src.nn.module import Module
+        self.module: Module = module
         self.X = X
         self.y = y
 
-    def backprop(self):
+    def backprop(self) -> float:
         input = self.X
         for layer in self.module.layers:
             input = layer.forward(input)
@@ -24,6 +21,8 @@ class Backprop:
 
         for layer in self.module.layers[::-1]:
             grad_output = layer.backprop(grad_output)
+
+        return np.sum((y_hat - self.y)**2)
 
 
 

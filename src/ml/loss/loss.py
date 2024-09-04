@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..utility.type import LossType
+from src.utility.type import LossType
 
 
 class Loss(ABC):

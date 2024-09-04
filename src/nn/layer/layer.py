@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.nn.backprop.backprop_interfaces import Activation
+from src.nn.backprop.parameter_gradients import Activation
 from src.nn.linear import Linear
 
 
@@ -15,6 +15,7 @@ class Layer:
 
     def backprop(self, grad_output: np.array) -> np.array:
         grad_output = self.activation.backward_input(grad_output)
-        grad_output = self.linear.backward_input(grad_output)
         self.linear.backward_params(grad_output)
+        grad_output = self.linear.backward_input(grad_output)
+        self.linear.update_weights()
         return grad_output

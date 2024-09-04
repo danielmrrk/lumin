@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 from src.utility.parameter import Parameters, Parameter
-from src.gradient import linear_regression
+from src.ml.gradient import linear_regression
 
 
 def test_gradient_linear_regression():
