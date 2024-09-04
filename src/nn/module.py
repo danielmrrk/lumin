@@ -1,14 +1,18 @@
 import numpy as np
 
-from src.nn.backprop.backprop import Backprop
+from src.nn.backprop.backprop import backprop
 from src.nn.layer.layer import Layer
 from src.nn.layer.output_layer import OutputLayer
+from src.nn.loss.loss import Loss
+from src.nn.optimizer.optimizer import Optimizer
 
 
 class Module:
-    def __init__(self, layers: list[Layer], output_layer: OutputLayer):
+    def __init__(self, layers: list[Layer], output_layer: OutputLayer, loss: Loss, optimizer: Optimizer):
         self.layers = layers
         self.output_layer = output_layer
+        self.loss = loss
+        self.optimizer = optimizer
 
     def fit(self, epochs: int, batches: int, X: np.array, y: np.array):
         num_samples = len(X)
@@ -28,7 +32,7 @@ class Module:
                 batch_y = y_shuffled[start_idx:end_idx]
 
                 # Calculate the loss for the current batch
-                batch_loss = Backprop(self, batch_X, batch_y).backprop()
+                batch_loss = backprop(self, batch_X, batch_y, self.loss, self.optimizer)
 
                 # Accumulate total loss and count examples
                 total_loss += batch_loss

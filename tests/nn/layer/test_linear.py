@@ -1,5 +1,5 @@
 import numpy as np
-from src.nn.linear import Linear  # Adjust import path based on your project structure
+from src.nn.layer.linear import Linear  # Adjust import path based on your project structure
 from src.utility.parameter import Parameter
 from src.utility.type import InitType
 

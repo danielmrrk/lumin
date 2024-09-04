@@ -1,28 +1,26 @@
 import numpy as np
 
-class Backprop:
-    def __init__(self, module, X: np.array, y: np.array):
-        from src.nn.module import Module
-        self.module: Module = module
-        self.X = X
-        self.y = y
+from src.nn.loss.loss import Loss
+from src.nn.optimizer.optimizer import Optimizer
 
-    def backprop(self) -> float:
-        input = self.X
-        for layer in self.module.layers:
-            input = layer.forward(input)
 
-        y_hat = self.module.output_layer.forward(input)
-        examples = len(self.y)
+def backprop(module, X: np.array, y: np.array, loss: Loss, optimizer: Optimizer) -> float:
+    from src.nn.module import Module
+    module: Module = module
 
-        # gradient in respect to the loss examples
-        grad_output = (y_hat - self.y) / examples
-        grad_output = self.module.output_layer.backprop(grad_output)
+    input = X
+    for layer in module.layers:
+        input = layer.forward_train(input)
 
-        for layer in self.module.layers[::-1]:
-            grad_output = layer.backprop(grad_output)
+    y_hat = module.output_layer.forward_train(input)
 
-        return np.sum((y_hat - self.y)**2)
+    grad_output = loss.gradient(y_hat, y)
+    grad_output = module.output_layer.backprop(grad_output, optimizer)
+
+    for layer in module.layers[::-1]:
+        grad_output = layer.backprop(grad_output, optimizer)
+
+    return loss.loss(y_hat, y)
 
 
 

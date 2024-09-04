@@ -8,8 +8,10 @@ from sklearn.metrics import mean_squared_error  # Import scikit-learn's MSE func
 from src.nn.activation.relu import ReLu
 from src.nn.layer.layer import Layer
 from src.nn.layer.output_layer import OutputLayer
-from src.nn.linear import Linear
+from src.nn.layer.linear import Linear
+from src.nn.loss.mse import MSE
 from src.nn.module import Module
+from src.nn.optimizer.sgd import SGD
 
 # Set random seed for reproducibility
 np.random.seed(42)
@@ -39,8 +41,9 @@ m = Module(
             Linear(32, units=16),
             ReLu()
         )],
-    output_layer=OutputLayer(Linear(16, 1)
-    )
+    output_layer = OutputLayer(Linear(16, 1)),
+    loss = MSE(),
+    optimizer = SGD()
 )
 
 # Train the custom model

@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.nn.initialization import InitParams
+from src.nn.data_preparation.initialization import InitParams
 from src.nn.backprop.parameter_gradients import ParameterGradients
 from src.utility.parameter import Parameter
 from src.utility.type import InitType
@@ -14,7 +14,7 @@ class Linear(ParameterGradients, InitParams):
 
     def forward_train(self, X: np.array):
         self._input = X
-        return self.forward(self, X)
+        return self.forward(X)
 
     def forward(self, X: np.array) -> np.array:
         self._input = X
@@ -33,12 +33,6 @@ class Linear(ParameterGradients, InitParams):
 
     def backward_input(self, grad_output: np.array) -> np.array:
         return np.dot(grad_output, self.p[Parameter.COEFFICIENTS].T)
-
-    def update_weights(self, alpha: float = 1e-3):
-        if self._grad_params is None:
-            raise Exception("You can't update the parameter since you have not calculated the gradient yet.")
-        self.p[Parameter.COEFFICIENTS] -= alpha * self._grad_params[Parameter.COEFFICIENTS]
-        self.p[Parameter.INTERCEPTS] -= alpha * self._grad_params[Parameter.INTERCEPTS]
 
 
 
