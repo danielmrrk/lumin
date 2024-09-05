@@ -26,6 +26,11 @@ X = np.hstack((X1, X2))
 true_coefficients = np.array([5, -3]).reshape(-1, 1)
 y = X @ true_coefficients + 4 + np.random.randn(100, 1) * 2  # Adding Gaussian noise
 
+print(X.shape)
+print(y.shape)
+
+
+
 # Print the first few rows of the dataset
 print("First few rows of the dataset (features and target):")
 print(np.hstack((X, y))[:5])

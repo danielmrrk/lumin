@@ -1,50 +1,42 @@
 import numpy as np
+from tqdm import tqdm
 
 from src.nn.backprop.backprop import backprop
+from src.nn.data_preparation.mini_batch_preparer import MiniBatchPreparer
 from src.nn.layer.layer import Layer
 from src.nn.layer.output_layer import OutputLayer
 from src.nn.loss.loss import Loss
+from src.nn.loss.loss_factory import loss_factory
 from src.nn.optimizer.optimizer import Optimizer
+from src.nn.optimizer.optimizer_factory import optimizer_factory
+from src.nn.type import LossType, OptimizerType
 
 
 class Module:
-    def __init__(self, layers: list[Layer], output_layer: OutputLayer, loss: Loss, optimizer: Optimizer):
+    def __init__(self, layers: list[Layer], output_layer: OutputLayer, loss_type: LossType, optimizer: Optimizer):
         self.layers = layers
-        self.output_layer = output_layer
-        self.loss = loss
+        self.output_layer: OutputLayer = output_layer
+        self.loss: Loss = loss_factory[loss_type]()
         self.optimizer = optimizer
 
-    def fit(self, epochs: int, batches: int, X: np.array, y: np.array):
-        num_samples = len(X)
-        batch_size = int(np.ceil(num_samples / batches))
+    def fit(self, epochs: int, batches: int, X: np.array, y: np.array, verbose: bool = True):
+        num_samples = len(y)
+        batches = batches if self.optimizer.mini_batch else 1
 
         for epoch in range(epochs):
-            indices = np.random.permutation(num_samples)
-            X_shuffled = X[indices]
-            y_shuffled = y[indices]
+            mini_batch_preparer = MiniBatchPreparer(batches, X, y, num_samples)
 
-            total_loss = 0  # Accumulate the total loss for this epoch
-            total_examples = 0  # Track the total number of examples processed
+            total_loss = 0
 
-            for start_idx in range(0, num_samples, batch_size):
-                end_idx = min(start_idx + batch_size, num_samples)
-                batch_X = X_shuffled[start_idx:end_idx]
-                batch_y = y_shuffled[start_idx:end_idx]
-
-                # Calculate the loss for the current batch
+            for idx in range(batches):
+                batch_X, batch_y = mini_batch_preparer.get_batch(idx)
                 batch_loss = backprop(self, batch_X, batch_y, self.loss, self.optimizer)
 
-                # Accumulate total loss and count examples
-                total_loss += batch_loss
-                total_examples += len(batch_y)
+                total_loss += batch_loss * len(batch_y)
 
-                current_batch = (start_idx // batch_size) + 1
+                print(f"\rEpoch: {epoch + 1}/{epochs}, Batch: {idx + 1}/{batches}, Batch Loss: {batch_loss:.4f}", end="")
 
-                # Optionally print the batch loss
-                print(f"\rEpoch: {epoch + 1}/{epochs}, Batch: {current_batch}/{batches}", end="")
-
-            # Average the total loss over all examples in the epoch
-            avg_loss = total_loss / total_examples
+            avg_loss = total_loss / num_samples
             print(f"\nEpoch: {epoch + 1}/{epochs}, Average Loss: {avg_loss:.4f}")
 
         print("Training complete.")

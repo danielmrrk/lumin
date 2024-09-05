@@ -5,7 +5,7 @@ import numpy as np
 
 class Activation(ABC):
     def __init__(self):
-        self._z = None
+        self.__z = None
 
     @abstractmethod
     def forward_train(self, z: np.array) -> np.array:
@@ -48,3 +48,10 @@ class Activation(ABC):
             np.array: Gradient of the loss with respect to the input x.
         """
         pass
+
+    def z(self):
+        """
+        Returns:
+            np.array: Input to activation function, that was saved in the last forward pass
+        """
+        return self.__z

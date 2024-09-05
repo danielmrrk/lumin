@@ -20,7 +20,7 @@ def backprop(module, X: np.array, y: np.array, loss: Loss, optimizer: Optimizer)
     for layer in module.layers[::-1]:
         grad_output = layer.backprop(grad_output, optimizer)
 
-    return loss.loss(y_hat, y)
+    return loss.loss(y_hat, y) / len(y)
 
 
 
