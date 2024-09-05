@@ -1,7 +1,7 @@
 import numpy as np
 
 from .optimizer import Optimizer
-from src.gradient.gradient_mapping import gradient_mapping, GradientFunction
+from src.ml.gradient.gradient_mapping import gradient_mapping, GradientFunction
 from src.utility.type import LossType, ModelType, OptimizerType
 from src.utility.parameter import Parameters, Parameter
 

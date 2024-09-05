@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 import numpy as np
 
-from src.loss.loss import Loss
-from src.optimizer.optimizer import Optimizer
+from src.ml.loss.loss import Loss
+from src.ml.optimizer.optimizer import Optimizer
 from src.utility.type import ModelType
 from src.utility.parameter import Parameter, Parameters
 

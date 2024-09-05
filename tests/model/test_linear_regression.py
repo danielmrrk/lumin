@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from src.model.linear_regression import LinearRegression
+from src.ml.model.linear_regression import LinearRegression
 from sklearn.linear_model import LinearRegression as LR
 
 from src.utility.type import ModelType

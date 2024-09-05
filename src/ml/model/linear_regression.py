@@ -1,10 +1,10 @@
 import numpy as np
 
 from .model import Model
-from src.loss.loss import Loss
-from src.loss.mse import MSE
-from src.optimizer.gradient_descent import GradientDescent
-from src.optimizer.optimizer import Optimizer
+from src.ml.loss.loss import Loss
+from src.ml.loss.mse import MSE
+from src.ml.optimizer.gradient_descent import GradientDescent
+from src.ml.optimizer.optimizer import Optimizer
 from src.utility.type import ModelType
 from src.utility.parameter import Parameter
 

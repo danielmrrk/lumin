@@ -1,12 +1,24 @@
-from abc import ABC, abstractmethod
-import numpy as np
+from abc import abstractmethod, ABC
 
-from src.utility.parameter import Parameters
+import numpy as np
 
 
 class Activation(ABC):
     def __init__(self):
-        self._z = None
+        self.__z = None
+
+    @abstractmethod
+    def forward_train(self, z: np.array) -> np.array:
+        """
+        Compute the forward pass given input z and also saves the input z.
+        Should only be used for training
+
+        Args:
+            z (np.array): Input data.
+
+        Returns:
+            np.array: Output h of the layer after forward pass.
+        """
 
     @abstractmethod
     def forward(self, z: np.array) -> np.array:
@@ -29,7 +41,7 @@ class Activation(ABC):
         Args:
             grad_output (np.array): Gradient of the loss with respect to the output.
 
-        self.__z (np.array): Output f of the linear layer, which functions as the input to the
+        self.__z (np.array): Output f of the linear layer, which is the input to the
         activation function.
 
         Returns:
@@ -37,19 +49,9 @@ class Activation(ABC):
         """
         pass
 
-
-class ParameterGradients(ABC):
-    @abstractmethod
-    def backward_params(self, grad_output: np.array):
+    def z(self):
         """
-        Compute the gradient of the loss with respect to the weights (parameters).
-
-        Args:
-            grad_output (np.array): Gradient of the loss with respect to the output.
-
-        self.__input (np.array): Input data from the forward pass. Is None if the forward
-        pass wasn't done yet.
-
-        Sets the gradients of the loss with respect to the parameters.
+        Returns:
+            np.array: Input to activation function, that was saved in the last forward pass
         """
-        pass
+        return self.__z

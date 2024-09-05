@@ -1,29 +1,26 @@
 import numpy as np
-from PIL.DdsImagePlugin import module
 
-from src.nn.module import Module
+from src.nn.loss.loss import Loss
+from src.nn.optimizer.optimizer import Optimizer
 
 
-class Backprop:
-    def __init__(self, module: Module, X: np.array, y: np.array):
-        self.module = module
-        self.X = X
-        self.y = y
+def backprop(module, X: np.array, y: np.array, loss: Loss, optimizer: Optimizer) -> float:
+    from src.nn.module import Module
+    module: Module = module
 
-    def backprop(self):
-        input = self.X
-        for layer in self.module.layers:
-            input = layer.forward(input)
+    input = X
+    for layer in module.layers:
+        input = layer.forward_train(input)
 
-        y_hat = self.module.output_layer.forward(input)
-        examples = len(self.y)
+    y_hat = module.output_layer.forward_train(input)
 
-        # gradient in respect to the loss examples
-        grad_output = (y_hat - self.y) / examples
-        grad_output = self.module.output_layer.backprop(grad_output)
+    grad_output = loss.gradient(y_hat, y)
+    grad_output = module.output_layer.backprop(grad_output, optimizer)
 
-        for layer in self.module.layers[::-1]:
-            grad_output = layer.backprop(grad_output)
+    for layer in module.layers[::-1]:
+        grad_output = layer.backprop(grad_output, optimizer)
+
+    return loss.loss(y_hat, y) / len(y)
 
 
 
