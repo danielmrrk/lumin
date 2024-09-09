@@ -8,8 +8,7 @@ from src.nn.layer.output_layer import OutputLayer
 from src.nn.loss.loss import Loss
 from src.nn.loss.loss_factory import loss_factory
 from src.nn.optimizer.optimizer import Optimizer
-from src.nn.optimizer.optimizer_factory import optimizer_factory
-from src.nn.type import LossType, OptimizerType
+from src.nn.type import LossType
 
 
 class Module:
@@ -18,9 +17,14 @@ class Module:
         self.output_layer: OutputLayer = output_layer
         self.loss: Loss = loss_factory[loss_type]()
         self.optimizer = optimizer
+        self.__generate_unique_ids()
+
+    def __generate_unique_ids(self):
+        for idx, layer in enumerate(self.layers):
+            layer.linear.set_unique_id(idx)
 
     def fit(self, epochs: int, batches: int, X: np.array, y: np.array, verbose: bool = True):
-        num_samples = len(y)
+        num_samples = X.shape[0]
         batches = batches if self.optimizer.mini_batch else 1
 
         for epoch in range(epochs):
@@ -30,14 +34,15 @@ class Module:
 
             for idx in range(batches):
                 batch_X, batch_y = mini_batch_preparer.get_batch(idx)
-                batch_loss = backprop(self, batch_X, batch_y, self.loss, self.optimizer)
+                batch_loss = backprop(self, batch_X, batch_y, self.loss, self.optimizer, self.output_layer.activation)
 
                 total_loss += batch_loss * len(batch_y)
-
-                print(f"\rEpoch: {epoch + 1}/{epochs}, Batch: {idx + 1}/{batches}, Batch Loss: {batch_loss:.4f}", end="")
+                if verbose:
+                    print(f"\rEpoch: {epoch + 1}/{epochs}, Batch: {idx + 1}/{batches}, Batch Loss: {batch_loss:.4f}", end="")
 
             avg_loss = total_loss / num_samples
-            print(f"\nEpoch: {epoch + 1}/{epochs}, Average Loss: {avg_loss:.4f}")
+            if verbose:
+                print(f"\nEpoch: {epoch + 1}/{epochs}, Average Loss: {avg_loss:.4f}")
 
         print("Training complete.")
 

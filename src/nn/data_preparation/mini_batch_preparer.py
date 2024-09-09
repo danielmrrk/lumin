@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class MiniBatchPreparer:
     def __init__(self, batches: int, X: np.array, y: np.array, num_samples: int):
         self.num_samples = num_samples
