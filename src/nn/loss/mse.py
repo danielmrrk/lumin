@@ -1,11 +1,10 @@
 import numpy as np
-
 from src.nn.loss.loss import Loss
 
 
 class MSE(Loss):
     def loss(self, y_hat: np.array, y: np.array) -> float:
-        return np.sum((y_hat - y)**2)
+        return np.sum((y_hat - y) ** 2) / y.shape[0]
 
     def gradient(self, y_hat: np.array, y: np.array) -> np.array:
-        return (y_hat - y) / len(y)
+        return (y_hat - y) / y.shape[0]

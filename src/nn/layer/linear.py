@@ -2,6 +2,8 @@ import numpy as np
 
 from src.nn.data_preparation.initialization import InitParams
 from src.nn.backprop.parameter_gradients import ParameterGradients
+from src.nn.normalization.norm_factory import norm_factory
+from src.nn.type import NormalizationType
 from src.utility.parameter import Parameter
 from src.utility.type import InitType
 
@@ -12,12 +14,11 @@ class Linear(ParameterGradients, InitParams):
         self.__input = None
         self.__grad_params = None
 
-    def forward_train(self, X: np.array):
+    def forward_train(self, X: np.array) -> np.array:
         self.__input = X
         return self.forward(X)
 
     def forward(self, X: np.array) -> np.array:
-        self.__input = X
         return np.dot(X, self.p[Parameter.COEFFICIENTS]) + self.p[Parameter.INTERCEPTS]
 
     def backward_params(self, grad_output: np.array):
@@ -34,9 +35,5 @@ class Linear(ParameterGradients, InitParams):
     def backward_input(self, grad_output: np.array) -> np.array:
         return np.dot(grad_output, self.p[Parameter.COEFFICIENTS].T)
 
-    def grad_params(self):
+    def grad_params(self) -> dict:
         return self.__grad_params
-
-
-
-

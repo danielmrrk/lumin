@@ -1,7 +1,6 @@
 from src.nn.optimizer.optimizer import Optimizer
 from src.utility.parameter import Parameters, Parameter
 
-
 class GradientDescent(Optimizer):
     def __init__(self, lr: float = 1e-3):
         super().__init__(mini_batch=False)
