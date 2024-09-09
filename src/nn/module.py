@@ -17,6 +17,11 @@ class Module:
         self.output_layer: OutputLayer = output_layer
         self.loss: Loss = loss_factory[loss_type]()
         self.optimizer = optimizer
+        self.__generate_unique_ids()
+
+    def __generate_unique_ids(self):
+        for idx, layer in enumerate(self.layers):
+            layer.linear.set_unique_id(idx)
 
     def fit(self, epochs: int, batches: int, X: np.array, y: np.array, verbose: bool = True):
         num_samples = X.shape[0]

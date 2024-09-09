@@ -27,7 +27,7 @@ class Optimizer(ABC):
         self.mini_batch = mini_batch
 
     @abstractmethod
-    def update(self, p: Parameters, gradient: Parameters):
+    def update(self, p: Parameters, gradient: Parameters, id: int):
         """
         Update the model parameters based on the computed gradients.
 
@@ -37,6 +37,8 @@ class Optimizer(ABC):
         Args:
             p (Parameters): The parameters of the model to be updated.
             gradient (Parameters): The gradients of the loss function with respect to the parameters.
+            id (int): Unique identifier for each linear layer, which can be used to help access layer specific
+            information
 
         Raises:
             NotImplementedError: This is an abstract method and should be implemented in subclasses.

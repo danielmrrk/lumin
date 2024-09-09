@@ -10,6 +10,7 @@ class ModelType(Enum):
     LOGISTIC_REGRESSION = auto()
 
 class OptimizerType(Enum):
+
     GRADIENT_DESCENT = auto()
 
 class InitType(Enum):

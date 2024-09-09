@@ -14,7 +14,6 @@ class Layer:
         self.activation: Activation = activation_factory[activation_type]()
         self.norm_func = norm_factory[norm] if norm else None
 
-
     def forward_train(self, X: np.array) -> np.array:
         z = self.linear.forward_train(X)
         norm_z = self.normalize(z)
@@ -29,7 +28,7 @@ class Layer:
         grad_output = self.activation.backward_input(grad_output, kwargs)
         self.linear.backward_params(grad_output)
         grad_output = self.linear.backward_input(grad_output)
-        optimizer.update(self.linear.p, self.linear.grad_params())
+        optimizer.update(self.linear.p, self.linear.grad_params(), self.linear.id)
         return grad_output
 
     def normalize(self, z: np.array) -> np.array:

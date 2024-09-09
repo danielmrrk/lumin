@@ -11,6 +11,7 @@ from src.utility.type import InitType
 class Linear(ParameterGradients, InitParams):
     def __init__(self, input_dim: int, units: int, init: InitType = InitType.HE):
         InitParams.__init__(self, input_dim, units, init)
+        self.id = None
         self.__input = None
         self.__grad_params = None
 
@@ -37,3 +38,6 @@ class Linear(ParameterGradients, InitParams):
 
     def grad_params(self) -> dict:
         return self.__grad_params
+
+    def set_unique_id(self, id: int):
+        self.id = id

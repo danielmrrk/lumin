@@ -6,6 +6,9 @@ class ActivationType(Enum):
     SOFTMAX = auto()
 
 class OptimizerType(Enum):
+    ADAM = auto()
+    RMS_PROP = auto()
+    SGD_MOMENTUM = auto()
     GRADIENT_DESCENT = auto()
     SGD = auto()
 
